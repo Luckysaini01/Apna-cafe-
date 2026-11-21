@@ -1,0 +1,238 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  name        String
+  phone       String?
+  address     String?
+  gstNumber   String?
+  fssaiNumber String?
+  upiId       String?
+  upiName     String?
+  logoUrl     String?
+  taxPercent  Float           @default(5)
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+
+  users       User[]
+  tables      Table[]
+  categories  MenuCategory[]
+  items       MenuItem[]
+  orders      Order[]
+  payments    Payment[]
+  waiterCalls WaiterCall[]
+  settings    TenantSettings?
+}
+
+model TenantSettings {
+  id                String  @id @default(cuid())
+  tenantId          String  @unique
+  autoAcceptOrders  Boolean @default(true)
+  allowUpiPayment   Boolean @default(true)
+  callWaiterEnabled Boolean @default(true)
+  orderTimeoutMin   Int     @default(30)
+  themeColor        String  @default("#FF6B35")
+  tenant            Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  OWNER
+  MANAGER
+  WAITER
+  KITCHEN
+  CUSTOMER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  phone     String   @unique
+  name      String?
+  email     String?  @unique
+  password  String?
+  role      Role     @default(CUSTOMER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  tenant    Tenant?     @relation(fields: [tenantId], references: [id])
+  orders    Order[]     @relation("CustomerOrders")
+  handled   Order[]     @relation("HandledOrders")
+
+  @@index([tenantId, role])
+}
+
+model Table {
+  id       String      @id @default(cuid())
+  tenantId String
+  number   String
+  capacity Int         @default(4)
+  qrToken  String      @unique @default(cuid())
+  isActive Boolean     @default(true)
+
+  tenant   Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  orders   Order[]
+  calls    WaiterCall[]
+
+  @@unique([tenantId, number])
+}
+
+model MenuCategory {
+  id        String     @id @default(cuid())
+  tenantId  String
+  name      String
+  sortOrder Int        @default(0)
+  isActive  Boolean    @default(true)
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  items     MenuItem[]
+}
+
+enum FoodType {
+  VEG
+  NONVEG
+  EGG
+  VEGAN
+}
+
+model MenuItem {
+  id          String       @id @default(cuid())
+  tenantId    String
+  categoryId  String
+  name        String
+  description String?
+  price       Decimal      @db.Decimal(10, 2)
+  imageUrl    String?
+  foodType    FoodType     @default(VEG)
+  isAvailable Boolean      @default(true)
+  sortOrder   Int          @default(0)
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  category    MenuCategory @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+
+  @@index([tenantId, categoryId, isAvailable])
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  PREPARING
+  READY
+  SERVED
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  orderNumber   Int
+  tenantId      String
+  tableId       String?
+  customerId    String?
+  handledById   String?
+  orderType     OrderType     @default(DINE_IN)
+  status        OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(UNPAID)
+  subtotal      Decimal       @db.Decimal(10, 2)
+  taxAmount     Decimal       @db.Decimal(10, 2)
+  total         Decimal       @db.Decimal(10, 2)
+  notes         String?
+  placedAt      DateTime      @default(now())
+  acceptedAt    DateTime?
+  readyAt       DateTime?
+  completedAt   DateTime?
+
+  tenant        Tenant         @relation(fields: [tenantId], references: [id])
+  table         Table?         @relation(fields: [tableId], references: [id])
+  customer      User?          @relation("CustomerOrders", fields: [customerId], references: [id])
+  handledBy     User?          @relation("HandledOrders", fields: [handledById], references: [id])
+  items         OrderItem[]
+  payments      Payment[]
+  statusLogs    OrderStatusLog[]
+
+  @@unique([tenantId, orderNumber])
+  @@index([tenantId, status])
+  @@index([tenantId, placedAt])
+}
+
+model OrderItem {
+  id            String  @id @default(cuid())
+  orderId       String
+  menuItemId    String
+  nameSnapshot  String
+  priceSnapshot Decimal @db.Decimal(10, 2)
+  quantity      Int
+  notes         String?
+  status        String  @default("PENDING")
+
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem      MenuItem @relation(fields: [menuItemId], references: [id])
+
+  @@index([orderId])
+}
+
+model OrderStatusLog {
+  id         String      @id @default(cuid())
+  orderId    String
+  fromStatus OrderStatus?
+  toStatus   OrderStatus
+  changedBy  String?
+  note       String?
+  createdAt  DateTime    @default(now())
+
+  order      Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  tenantId    String
+  orderId     String
+  method      String
+  amount      Decimal       @db.Decimal(10, 2)
+  status      PaymentStatus @default(UNPAID)
+  upiTxnRef   String?
+  markedById  String?
+  markedAt    DateTime?
+  note        String?
+
+  tenant      Tenant        @relation(fields: [tenantId], references: [id])
+  order       Order         @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+}
+
+model WaiterCall {
+  id         String   @id @default(cuid())
+  tenantId   String
+  tableId    String
+  reason     String   @default("ASSISTANCE")
+  status     String   @default("PENDING")
+  resolvedBy String?
+  createdAt  DateTime @default(now())
+  resolvedAt DateTime?
+
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  table      Table    @relation(fields: [tableId], references: [id])
+
+  @@index([tenantId, status])
+}

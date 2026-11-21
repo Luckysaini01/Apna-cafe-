@@ -1,0 +1,43 @@
+{
+  "categories": [
+    { "id": "chai", "name": "Chai", "icon": "☕" },
+    { "id": "momos", "name": "Momos", "icon": "🥟" },
+    { "id": "pizza", "name": "Pizza", "icon": "🍕" },
+    { "id": "burger", "name": "Burger", "icon": "🍔" },
+    { "id": "patties", "name": "Patties", "icon": "🥐" },
+    { "id": "combos", "name": "Combos", "icon": "🎁" }
+  ],
+  "items": [
+    { "id": "c1", "category": "chai", "name": "Kulhad Chai", "desc": "Signature masala chai", "price": 30, "emoji": "☕", "best": true },
+    { "id": "c2", "category": "chai", "name": "Adrak Chai", "desc": "Fresh ginger chai", "price": 25, "emoji": "🫖" },
+    { "id": "c3", "category": "chai", "name": "Elaichi Chai", "desc": "Cardamom flavored", "price": 30, "emoji": "🫖" },
+    { "id": "c4", "category": "chai", "name": "Filter Coffee", "desc": "South Indian style", "price": 40, "emoji": "☕" },
+    { "id": "c5", "category": "chai", "name": "Cold Coffee", "desc": "Chilled with ice cream", "price": 70, "emoji": "🥤" },
+    { "id": "c6", "category": "chai", "name": "Hot Chocolate", "desc": "Creamy cocoa", "price": 80, "emoji": "🍫" },
+    { "id": "m1", "category": "momos", "name": "Afghani Veg Momos", "desc": "Creamy white sauce coated", "price": 90, "emoji": "🥟", "best": true },
+    { "id": "m2", "category": "momos", "name": "Afghani Paneer Momos", "desc": "Crispy fried + Afghani dip", "price": 110, "emoji": "🥟" },
+    { "id": "m3", "category": "momos", "name": "Afghani Cheese Corn", "desc": "Corn + cheese Afghani style", "price": 100, "emoji": "🥟" },
+    { "id": "m4", "category": "momos", "name": "Veg Steamed Momos", "desc": "6 pcs classic steamed", "price": 60, "emoji": "🥟" },
+    { "id": "m5", "category": "momos", "name": "Veg Fried Momos", "desc": "6 pcs crispy fried", "price": 70, "emoji": "🥟" },
+    { "id": "m6", "category": "momos", "name": "Paneer Momos", "desc": "6 pcs paneer filling", "price": 80, "emoji": "🥟" },
+    { "id": "m7", "category": "momos", "name": "Tandoori Veg Momos", "desc": "Charred tandoori style", "price": 100, "emoji": "🥟" },
+    { "id": "m8", "category": "momos", "name": "Afghani Momo Platter", "desc": "12 pcs mix + 2 dips", "price": 199, "emoji": "🥟", "best": true },
+    { "id": "p1", "category": "pizza", "name": "Margherita", "desc": "7 inch cheese + tomato", "price": 99, "emoji": "🍕" },
+    { "id": "p2", "category": "pizza", "name": "Veggie Delight", "desc": "7 inch loaded veggies", "price": 129, "emoji": "🍕" },
+    { "id": "p3", "category": "pizza", "name": "Paneer Tikka Pizza", "desc": "7 inch paneer + tikka", "price": 149, "emoji": "🍕", "best": true },
+    { "id": "p4", "category": "pizza", "name": "Afghani Paneer Pizza", "desc": "7 inch creamy Afghani", "price": 179, "emoji": "🍕", "best": true },
+    { "id": "p5", "category": "pizza", "name": "Farmhouse Pizza", "desc": "7 inch loaded", "price": 159, "emoji": "🍕" },
+    { "id": "b1", "category": "burger", "name": "Aloo Tikki Burger", "desc": "Classic desi tikki", "price": 50, "emoji": "🍔" },
+    { "id": "b2", "category": "burger", "name": "Veg Cheese Burger", "desc": "Crispy patty + cheese", "price": 70, "emoji": "🍔" },
+    { "id": "b3", "category": "burger", "name": "Paneer Burger", "desc": "Grilled paneer patty", "price": 90, "emoji": "🍔", "best": true },
+    { "id": "b4", "category": "burger", "name": "Afghani Paneer Burger", "desc": "Afghani sauce + paneer", "price": 120, "emoji": "🍔", "best": true },
+    { "id": "pt1", "category": "patties", "name": "Aloo Patties", "desc": "Classic potato filling", "price": 30, "emoji": "🥐" },
+    { "id": "pt2", "category": "patties", "name": "Paneer Patties", "desc": "Spiced paneer filling", "price": 45, "emoji": "🥐" },
+    { "id": "pt3", "category": "patties", "name": "Cheese Corn Patties", "desc": "Creamy corn + cheese", "price": 50, "emoji": "🥐" },
+    { "id": "pt4", "category": "patties", "name": "Afghani Paneer Patties", "desc": "Afghani sauce + paneer", "price": 70, "emoji": "🥐", "best": true },
+    { "id": "cb1", "category": "combos", "name": "Adda Combo", "desc": "Kulhad Chai + 6 Momos", "price": 79, "emoji": "🎁", "best": true },
+    { "id": "cb2", "category": "combos", "name": "Afghani Feast", "desc": "Afghani Momos + Cold Coffee", "price": 139, "emoji": "🎁", "best": true },
+    { "id": "cb3", "category": "combos", "name": "Study Combo", "desc": "Coffee + Veg Burger", "price": 99, "emoji": "🎁" },
+    { "id": "cb4", "category": "combos", "name": "Family Feast", "desc": "Pizza + 12 Momos + 2 Chai", "price": 399, "emoji": "🎁" }
+  ]
+}
