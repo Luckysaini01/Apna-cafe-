@@ -1,4 +1,5 @@
 import express from "express";
+import { createServer } from "node:http";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { allowedOrigins, env } from "./config/env.js";
@@ -47,3 +48,7 @@ export function createApp() {
 
   return app;
 }
+
+// Vercel's Express runtime also accepts a Node HTTP server as the app entrypoint.
+// Exporting the server avoids misclassifying the Express callable during bundling.
+export default createServer(createApp());
