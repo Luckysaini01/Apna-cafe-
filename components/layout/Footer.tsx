@@ -23,8 +23,12 @@ export function Footer() {
             variant="footer"
           />
         </div>
-        <p className="text-xs text-white/50">Apna Cafe made by lucky &copy; 2026 </p>
-            <p> 9719007099 </p>
+        <div className="flex w-full items-center justify-between gap-4 text-xs text-white/60 sm:w-auto sm:min-w-64 sm:flex-1">
+          <p>Apna Cafe made by lucky &copy; 2026</p>
+          <a className="whitespace-nowrap hover:text-white" href="tel:+919719007099">
+            9719007099
+          </a>
+        </div>
       </div>
     </footer>
   );
